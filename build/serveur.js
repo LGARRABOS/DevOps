@@ -28,22 +28,18 @@ const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/ping') {
         // Récupérez les en-têtes de la requête
         const headers = req.headers;
-        // Préparez la réponse JSON
-        const responseData = JSON.stringify({ headers });
-        // Définissez les en-têtes de la réponse
+        // Envoyez les en-têtes en tant que JSON directement
         res.writeHead(200, {
             'Content-Type': 'application/json',
         });
-        // Envoyez la réponse JSON
-        res.end(responseData);
+        res.end(JSON.stringify(headers));
     }
     else {
         // Gérez d'autres routes ici
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Page non trouvée');
+        res.writeHead(404).end();
     }
 });
-const PING_LISTEN_PORT = 3000;
-server.listen(PING_LISTEN_PORT, () => {
-    console.log(`Le serveur est en cours d'exécution sur le port ${PING_LISTEN_PORT}`);
+const port = 3000;
+server.listen(port, () => {
+    console.log(`Le serveur est en cours d'exécution sur le port ${port}`);
 });
