@@ -19,7 +19,6 @@ Pour obtenir les données de l'API, il suffit d'entrée dans un navigateur l'adr
 http://localhost:3000/ping
 ```
 
-## Note
-
+## Notes
 Ce projet à pour but de permettre à un utilisateur de récupérer les Headers de la requête HTTP GET sur l'adresse /ping.
 Si l'utilisateur envoie une requête HTTP GET sur une autre adresse, il recevra une erreur 404.
