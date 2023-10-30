@@ -1,0 +1,64 @@
+version: '3.3'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:5.7
+    container_name: wordpress-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_DATABASE: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+  # WordPress
+  wordpress:
+    restart: always
+    image: wordpress:latest
+    expose:
+      - 80
+    deploy:
+      replicas: 2
+    environment:
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: toto
+      WORDPRESS_DB_PASSWORD: toto
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - wordpress
+  redis:
+    image: redis:latest
+    container_name: redis
+    expose:
+      - "6379"
+    networks:
+      - backend
+
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  db_data:
+  wordpress_data:
